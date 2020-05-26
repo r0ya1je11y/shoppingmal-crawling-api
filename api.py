@@ -11,9 +11,15 @@ def readjson(filename):
 
     return data
 
-@app.route("/api/<name>")
-def data(name):
-    return flask.jsonify(readjson("data/" + name + ".json"))
+@app.route('/userLogin', methods = ['POST'])
+def userLogin():
+    user = request.get_json()
+    crawling.CrawlingTaobao(user['productID'], user['userID'], user['userPasswd'])
+    return flask.jsonify(readjson("data/" + user['productID'] + ".json"))
+
+@app.route("/api/<productID>")
+def data(productID):
+    return flask.jsonify(readjson("data/" + productID + ".json"))
 
 if __name__ == "__main__":
     app.run()
